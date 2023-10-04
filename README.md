@@ -1,6 +1,11 @@
-# Xplain
+# XPlain
 
 A refactored version of GPT utility for context-specific video explanations initially created at [HackMIT 2023](https://hackmit.org).
+
+## Extension
+
+Promo video:
+https://www.youtube.com/watch?v=BnQ5QAYGsPM
 
 ## Credits
 
