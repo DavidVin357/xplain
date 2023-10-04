@@ -1,0 +1,53 @@
+# Languages sorted by approx. popularity on wikipedia - good measure on how gpt understands language
+# Used to pick up the first language for which transcript is available
+
+language_codes = [
+    "en",  # English
+    "zh",  # Chinese
+    "es",  # Spanish
+    "de",  # German
+    "fr",  # French
+    "it",  # Italian
+    "nl",  # Dutch
+    "ja",  # Japanese
+    "pl",  # Polish
+    "pt",  # Portuguese
+    "vi",  # Vietnamese
+    "ar",  # Arabic
+    "uk",  # Ukrainian
+    "fa",  # Persian
+    "tr",  # Turkish
+    "sv",  # Swedish
+    "he",  # Hebrew
+    "ro",  # Romanian
+    "hu",  # Hungarian
+    "cs",  # Czech
+    "ko",  # Korean
+    "fi",  # Finnish
+    "no",  # Norwegian
+    "da",  # Danish
+    "sr",  # Serbian
+    "sk",  # Slovak
+    "hr",  # Croatian
+    "th",  # Thai
+    "bn",  # Bengali
+    "hi",  # Hindi
+    "ta",  # Tamil
+    "el",  # Greek
+    "bg",  # Bulgarian
+    "lt",  # Lithuanian
+    "sl",  # Slovenian
+    "lv",  # Latvian
+    "et",  # Estonian
+    "sq",  # Albanian
+    "mk",  # Macedonian
+    "hy",  # Armenian
+    "uz",  # Uzbek
+    "az",  # Azerbaijani
+    "bs",  # Bosnian
+    "eu",  # Basque
+    "ka",  # Georgian
+    "mn",  # Mongolian
+    "lo",  # Lao
+    "cy",  # Welsh
+]

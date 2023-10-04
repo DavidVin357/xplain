@@ -1,0 +1,9 @@
+.container {
+  width: 27rem;
+  height: 30rem;
+}
+
+.App {
+  text-align: center;
+  background-color: green;
+}
