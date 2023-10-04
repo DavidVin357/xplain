@@ -108,7 +108,7 @@ const Chat = () => {
 
     chatForm.reset()
 
-    const url = 'http://localhost:8000/question'
+    const url = 'https://xplain.live/question'
 
     await fetchEventSource(url, {
       method: 'POST',
