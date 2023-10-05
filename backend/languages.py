@@ -12,6 +12,7 @@ language_codes = [
     "ja",  # Japanese
     "pl",  # Polish
     "pt",  # Portuguese
+    "ru",  # russian
     "vi",  # Vietnamese
     "ar",  # Arabic
     "uk",  # Ukrainian

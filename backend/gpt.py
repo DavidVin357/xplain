@@ -6,13 +6,14 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
-import datetime
+model_name = os.getenv("MODEL_NAME")
 
 
 def get_openai_generator(messages: list):
     openai_stream = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model=model_name,
         messages=messages,
         stream=True,
     )
@@ -24,16 +25,14 @@ def get_openai_generator(messages: list):
 
 
 def get_system_prompt(video_id: str, timestamp: float) -> str:
-    context = get_context(
-        timestamp=timestamp, pre_interval=300, post_interval=120, video_id=video_id
-    )
+    context = get_context(timestamp=timestamp, video_id=video_id)
 
-    system_prompt = f""" You are going to play role of a tutor that answers person's questions about a watched video. 
-    You need to answer the questions only according to the video transcript (context) which consists of parts that are in format'[timestamp: phrase]'. Here is the transcript: `{context}`.
-    If it's not related to the video, tell that and try to clarify it.
-    Answer the question with simple language highly related to the context provided above.
-    #NEVER# mention word "transcript" when referring to the video, say "video" or "context". 
-    Go through the explanation step by step but keep the answer clear and concise.
+    system_prompt = f""" You are going to play role of a tutor that answers person's questions about a video he/she is watching. 
+    You need to answer the questions only according to the video transcript (context). Here is the transcript: `{context}`.
+    Provide the answer only according to the transcript provided above. Answer with a simple language.
+    If the question is not related to the video, tell that and try to clarify it.
+    #NEVER# mention word "transcript" when referring to the video, always say "video" instead. 
+    Go through the explanation step by step and keep the answer clear and concise.
     """
 
     return system_prompt
