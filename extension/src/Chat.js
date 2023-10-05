@@ -108,8 +108,8 @@ const Chat = () => {
 
     chatForm.reset()
 
-    const url = 'https://xplain.live/question'
-
+    const url = `${process.env.API_URL}/question`
+    setConnected(true)
     await fetchEventSource(url, {
       method: 'POST',
       headers: {
@@ -123,11 +123,6 @@ const Chat = () => {
         chat_history,
       }),
 
-      onopen(res) {
-        if (res.ok && res.status === 200) {
-          setConnected(true)
-        }
-      },
       onmessage: (event) => {
         setMessages((prev) => {
           const lastMessage = prev[prev.length - 1]

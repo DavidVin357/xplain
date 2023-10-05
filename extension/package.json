@@ -21,7 +21,8 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "webpack --config webpack.config.js",
+    "build": "NODE_ENV=development webpack --config webpack.config.js",
+    "publish": "NODE_ENV=production webpack --config webpack.config.js",
     "watch": "webpack -w --config webpack.config.js"
   },
   "eslintConfig": {
@@ -46,6 +47,7 @@
     "@babel/preset-react": "^7.22.15",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
+    "dotenv": "^16.3.1",
     "html-webpack-plugin": "^5.5.3",
     "react-svg-loader": "^3.0.3",
     "style-loader": "^3.3.3",

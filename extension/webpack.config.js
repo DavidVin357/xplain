@@ -3,6 +3,15 @@ const HTMLPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 
+const webpack = require('webpack')
+
+require('dotenv').config({
+  path:
+    process.env.NODE_ENV === 'development'
+      ? '.env.development'
+      : '.env.production',
+})
+
 module.exports = {
   entry: {
     index: './src/index.js',
@@ -53,6 +62,9 @@ module.exports = {
       ],
     }),
     new NodePolyfillPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env),
+    }),
 
     ...getHtmlPlugins(['index']),
   ],
