@@ -42,7 +42,7 @@ def get_context(timestamp: float, video_id: str):
 
     # prune context from the beginning if it's bigger than acceptable tokens_length of 16k (improbable)
     while tokens_length >= 16000:
-        letters_diff = math.ceil((tokens_length - 16000) * 4)
+        letters_diff = math.ceil((tokens_length - 16000) * 4) + 1
         context_text = context_text[letters_diff:]
         tokens_length = len(tokenizer.encode(context_text))
     return context_text
