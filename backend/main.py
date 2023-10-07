@@ -1,4 +1,4 @@
-from fastapi import FastAPI, status
+from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from gpt import get_openai_generator, get_system_prompt
 from pydantic import BaseModel
@@ -31,7 +31,9 @@ async def health_check():
 
 @app.post("/question")
 async def stream_answer(req: QuestionRequest):
-    system_prompt = get_system_prompt(video_id=req.video_id, timestamp=req.timestamp)
+    system_prompt = get_system_prompt(
+        video_id=req.video_id, timestamp=req.timestamp, chat_history=req.chat_history
+    )
 
     messages = req.chat_history + [
         {"role": "system", "content": system_prompt},

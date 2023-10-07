@@ -1,5 +1,6 @@
 import openai
 from transcript import get_context
+import tiktoken
 
 
 import os
@@ -24,8 +25,18 @@ def get_openai_generator(messages: list):
             yield "data: " + current_response + "\n\n"
 
 
-def get_system_prompt(video_id: str, timestamp: float) -> str:
-    context = get_context(timestamp=timestamp, video_id=video_id)
+def get_system_prompt(video_id: str, timestamp: float, chat_history: list) -> str:
+    chat_history_text = ""
+
+    for chat in chat_history:
+        chat_history_text += chat["content"]
+
+    tokenizer = tiktoken.encoding_for_model(model_name=model_name)
+    chat_history_length = len(tokenizer.encode(chat_history_text))
+
+    context = get_context(
+        timestamp=timestamp, video_id=video_id, chat_history_length=chat_history_length
+    )
 
     system_prompt = f""" You are going to play role of a tutor that answers person's questions about a video he/she is watching. 
     You need to answer the questions only according to the video transcript (context). Here is the transcript: `{context}`.

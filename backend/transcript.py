@@ -23,7 +23,7 @@ def binary_search_index(time_stamp: float, transcript: list) -> int:
     return min(l, r)
 
 
-def get_context(timestamp: float, video_id: str):
+def get_context(timestamp: float, video_id: str, chat_history_length: int):
     transcript = YouTubeTranscriptApi.get_transcript(
         video_id=video_id, languages=language_codes
     )
@@ -40,9 +40,12 @@ def get_context(timestamp: float, video_id: str):
     tokenizer = tiktoken.encoding_for_model(model_name=model_name)
     tokens_length = len(tokenizer.encode(context_text))
 
+    # 500 tokens for system prompt and some buffer (max for model - 16k)
+    limit = 15500 - chat_history_length
+
     # prune context from the beginning if it's bigger than acceptable tokens_length of 16k (improbable)
-    while tokens_length >= 16000:
-        letters_diff = math.ceil((tokens_length - 16000) * 4) + 1
+    while tokens_length >= limit:
+        letters_diff = math.ceil((tokens_length - limit) * 4) + 1
         context_text = context_text[letters_diff:]
         tokens_length = len(tokenizer.encode(context_text))
     return context_text
