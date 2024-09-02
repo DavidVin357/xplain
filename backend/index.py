@@ -9,7 +9,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from languages import language_codes
 import json
 import os
-from proxies import get_proxies
+from proxies import get_proxy
 
 load_dotenv()
 
@@ -39,7 +39,7 @@ def get_transcript(video_id: str):
 
     if transcript is None:
         new_transcript = YouTubeTranscriptApi.get_transcript(
-            video_id, language_codes, proxies=get_proxies()
+            video_id, language_codes, proxies={"http": get_proxy()}
         )
         redis_client.set(video_id, json.dumps(new_transcript))
         redis_client.expire(video_id, 60 * 60 * 24)  # 24 hours
