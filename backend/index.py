@@ -5,11 +5,9 @@ from redis.commands.search.query import Query
 from redis.commands.search.field import TextField, VectorField, NumericField
 import numpy as np
 from embeddings import construct_transcript_embeddings, get_embeddings, DIMENSIONS
-from youtube_transcript_api import YouTubeTranscriptApi
-from languages import language_codes
+from transcript import fetch_transcript
 import json
 import os
-from proxies import get_proxy
 
 load_dotenv()
 
@@ -38,9 +36,7 @@ def get_transcript(video_id: str):
     transcript = redis_client.get(video_id)
 
     if transcript is None:
-        new_transcript = YouTubeTranscriptApi.get_transcript(
-            video_id, language_codes, proxies={"http": get_proxy()}
-        )
+        new_transcript = fetch_transcript(video_id)
         redis_client.set(video_id, json.dumps(new_transcript))
         redis_client.expire(video_id, 60 * 60 * 24)  # 24 hours
         return new_transcript
