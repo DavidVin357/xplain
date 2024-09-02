@@ -1,8 +1,8 @@
 {
-  "version": "1.0.1",
+  "version": "1.1.0",
   "manifest_version": 3,
   "name": "XPlain",
-  "description": "Ask questions about any Youtube videos and get context-specific answers",
+  "description": "Ask questions or search for timestamp on any Youtube video",
   "action": {
     "default_popup": "js/index.html",
     "default_title": "XPlain"

@@ -1,32 +1,11 @@
 /*global chrome*/
 
-import { Box, TextInput, Loader, Tooltip, Button } from '@mantine/core'
+import { Box, TextInput, Loader, Tooltip, Tabs } from '@mantine/core'
 import { SendHorizonalIcon, EraserIcon, MailSearchIcon } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useForm } from '@mantine/form'
 import { fetchEventSource } from '@microsoft/fetch-event-source'
-
-const getTimeStamp = async () => {
-  const [tab] = await chrome.tabs.query({
-    active: true,
-    currentWindow: true,
-  })
-  const timestamp = await chrome.tabs.sendMessage(tab.id, {
-    action: 'getVideoTimestamp',
-  })
-  return timestamp
-}
-
-const getVideoId = async () => {
-  const [tab] = await chrome.tabs.query({
-    active: true,
-    currentWindow: true,
-  })
-  const videoId = await chrome.tabs.sendMessage(tab.id, {
-    action: 'getVideoId',
-  })
-  return videoId
-}
+import { getVideoId } from './helper'
 
 const retrieveMessages = async () => {
   const [tab] = await chrome.tabs.query({
@@ -59,15 +38,16 @@ const Chat = () => {
 
   const getChatHistory = () => {
     const chat_history = messages
-      .filter((m) => m && (m.type == 'q' || m.type == 'a'))
+      .filter((m) => m && (m.role == 'user' || m.role == 'assistant'))
       .map((m) => {
         return {
-          role: m.type === 'q' ? 'user' : 'assistant',
+          role: m.role,
           content: m.text,
         }
       })
     return chat_history
   }
+
   useEffect(async () => {
     const messages = await retrieveMessages()
     if (messages?.length) {
@@ -98,12 +78,11 @@ const Chat = () => {
     setMessages((prev) => [
       ...prev,
       {
-        type: 'q',
+        role: 'user',
         text: question,
       },
     ])
 
-    const timestamp = await getTimeStamp()
     const video_id = await getVideoId()
 
     chatForm.reset()
@@ -117,7 +96,6 @@ const Chat = () => {
         Accept: 'text/event-stream',
       },
       body: JSON.stringify({
-        timestamp,
         video_id,
         question,
         chat_history,
@@ -126,16 +104,16 @@ const Chat = () => {
       onmessage: (event) => {
         setMessages((prev) => {
           const lastMessage = prev[prev.length - 1]
-          if (lastMessage.type === 'a') {
+          if (lastMessage.role === 'assistant') {
             return [
               ...prev.slice(0, -1),
               {
-                type: 'a',
+                role: 'assistant',
                 text: (lastMessage.text += event.data),
               },
             ]
           } else {
-            return [...prev, { type: 'a', text: event.data }]
+            return [...prev, { role: 'assistant', text: event.data }]
           }
         })
       },
@@ -150,8 +128,7 @@ const Chat = () => {
     <Box
       style={{
         width: '100vw',
-        // justifyContent: 'space-between',
-        height: 'calc(100vh - 90px)',
+        height: 'calc(100vh - 180px)',
         overflowY: 'auto',
       }}
       id='chat'
@@ -165,7 +142,7 @@ const Chat = () => {
                   style={{
                     borderRadius: 20,
                     background:
-                      message.type === 'q'
+                      message.role === 'user'
                         ? 'linear-gradient(35deg, #ed6ea0, #ec8c69)'
                         : '#845EF7',
                     color: 'white',
@@ -181,7 +158,7 @@ const Chat = () => {
         </Box>
       ) : (
         <Box mx='35%' my='35%'>
-          <MailSearchIcon size='100px' color='#DB2777' opacity={0.4} />
+          <MailSearchIcon size='100px' color='#03045e' opacity={0.7} />
         </Box>
       )}
 

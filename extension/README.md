@@ -1,6 +1,6 @@
 # XPlain
 
-Ask questions or search for a timestamp on any YouTube video
+A refactored version of GPT utility for context-specific video explanations initially created at [HackMIT 2023](https://hackmit.org).
 
 ## Extension
 

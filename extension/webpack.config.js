@@ -39,7 +39,7 @@ module.exports = {
         },
       },
       {
-        exclude: /node_modules\/(?!(@mantine\/core)\/esm\/index.css).*/,
+        // exclude: /node_modules\/(?!(@mantine\/core)\/esm\/index.css).*/,
 
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],

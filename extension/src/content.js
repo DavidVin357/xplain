@@ -7,6 +7,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     sendResponse(timestamp)
   }
 
+  if (request.action === 'goToTimestamp') {
+    const player = document.querySelector('video')
+    if (player) {
+      player.currentTime = request.timestamp
+      player.play()
+    }
+  }
+
   if (request.action === 'getVideoId') {
     const videoId = getVideoId()
     sendResponse(videoId)
@@ -15,6 +23,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'getIsYoutubeVideo') {
     const videoId = getVideoId()
     sendResponse(videoId && window.location.hostname === 'www.youtube.com')
+  }
+
+  if (request.action === 'storeMessages') {
+    const videoId = getVideoId()
+
+    chrome.storage.sync.set({ [videoId]: request.messages })
   }
 
   if (request.action === 'retrieveMessages') {
@@ -28,9 +42,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true
   }
 
-  if (request.action === 'storeMessages') {
-    const videoId = getVideoId()
+  if (request.action === 'storeSearchData') {
+    const id = getVideoId() + '-search'
 
-    chrome.storage.sync.set({ [videoId]: request.messages })
+    chrome.storage.sync.set({ [id]: request.data })
+  }
+
+  if (request.action === 'getSearchData') {
+    const id = getVideoId() + '-search'
+
+    chrome.storage.sync.get([id]).then((result) => {
+      sendResponse(result[id])
+    })
+
+    // Important for sending response after asynchronous call
+    return true
   }
 })

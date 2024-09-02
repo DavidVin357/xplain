@@ -1,4 +1,4 @@
-# Languages sorted by approx. popularity on wikipedia - good measure on how gpt understands language
+# Languages sorted by approx. popularity on wikipedia - good measure on how gpt understands the language
 # Used to pick up the first language for which transcript is available
 
 language_codes = [
