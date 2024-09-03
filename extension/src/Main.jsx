@@ -89,7 +89,6 @@ const Main = () => {
 
     setSearchResults(results)
     await storeSearchData({ query, results })
-    console.log('saved')
     setActiveTab('search')
     setSearching(false)
   }

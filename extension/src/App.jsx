@@ -9,12 +9,15 @@ import Main from './Main'
 import { getIsYoutubeVideo } from './helper'
 
 function App() {
-  const [isYoutube, setIsYoutube] = useState(true)
+  const [isYoutube, setIsYoutube] = useState(false)
 
   useEffect(async () => {
-    const isYoutube = await getIsYoutubeVideo()
-    console.log('isYoutube', isYoutube)
-    setIsYoutube(isYoutube)
+    try {
+      const isYoutube = await getIsYoutubeVideo()
+      setIsYoutube(isYoutube)
+    } catch (e) {
+      setIsYoutube(false)
+    }
   }, [])
 
   return (
@@ -31,7 +34,14 @@ function App() {
           height: '30px',
         }}
       />
-      {isYoutube ? <Main /> : <h1>Not Youtube</h1>}
+      {isYoutube ? (
+        <Main />
+      ) : (
+        <div style={{ marginLeft: '10px' }}>
+          <h1>Not Youtube</h1>
+          <h4>Go to Youtube video to see the extension</h4>
+        </div>
+      )}
     </MantineProvider>
   )
 }

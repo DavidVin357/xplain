@@ -9,7 +9,6 @@ from index import search_video, store_embeddings
 
 class QuestionRequest(BaseModel):
     video_id: str
-    # timestamp: float
     question: str
     chat_history: Optional[list] = []
 
